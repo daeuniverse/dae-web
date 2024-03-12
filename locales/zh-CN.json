@@ -1,0 +1,13 @@
+{
+  "routing": "路由",
+  "dns": "DNS",
+  "config": "配置",
+  "group": "群组",
+  "node": "节点",
+  "subscription": "订阅",
+
+  "software options": "软件选项",
+  "interface and kernel options": "接口及内核选项",
+  "node connectivity check": "节点连通性检测",
+  "connecting options": "连接选项"
+}

@@ -1,0 +1,356 @@
+directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+type Query {
+  healthCheck: Int!
+  token(username: String!, password: String!): String!
+  numberUsers: Int!
+  # jsonStorage get given paths from user related json storage. Empty paths is to get all. Refer to https://github.com/tidwall/gjson
+  jsonStorage(paths: [String!]): [String!]! @hasRole(role: ADMIN)
+  user: User! @hasRole(role: ADMIN)
+  configFlatDesc: [ConfigFlatDesc!]! @hasRole(role: ADMIN)
+  configs(id: ID, selected: Boolean): [Config!]! @hasRole(role: ADMIN)
+  dnss(id: ID, selected: Boolean): [Dns!]! @hasRole(role: ADMIN)
+  routings(id: ID, selected: Boolean): [Routing!]! @hasRole(role: ADMIN)
+  parsedRouting(raw: String!): DaeRouting! @hasRole(role: ADMIN)
+  parsedDns(raw: String!): DaeDns! @hasRole(role: ADMIN)
+  subscriptions(id: ID): [Subscription!]! @hasRole(role: ADMIN)
+  groups(id: ID): [Group!]! @hasRole(role: ADMIN)
+  group(name: String!): Group! @hasRole(role: ADMIN)
+  nodes(id: ID, subscriptionId: ID, first: Int, after: ID): NodesConnection!
+    @hasRole(role: ADMIN)
+  general: General! @hasRole(role: ADMIN)
+}
+type Mutation {
+  # createUser creates a user if there is no user.
+  createUser(username: String!, password: String!): String!
+  # createConfig creates a global config. Null arguments will be converted to default value.
+  createConfig(name: String, global: globalInput): Config! @hasRole(role: ADMIN)
+  # createConfig creates a dns config. Null arguments will be converted to default value.
+  createDns(name: String, dns: String): Dns! @hasRole(role: ADMIN)
+  # createConfig creates a routing config. Null arguments will be converted to default value.
+  createRouting(name: String, routing: String): Routing! @hasRole(role: ADMIN)
+
+  # setJsonStorage set given paths to values in user related json storage. Refer to https://github.com/tidwall/sjson
+  setJsonStorage(paths: [String!]!, values: [String!]!): Int!
+    @hasRole(role: ADMIN)
+  # removeJsonStorage remove given paths from user related json storage. Empty paths is to clear json storage. Refer to https://github.com/tidwall/sjson
+  removeJsonStorage(paths: [String!]): Int! @hasRole(role: ADMIN)
+  # updateAvatar update avatar for current user. Remove avatar if avatar is null. Blob base64 encoded image is recommended.
+  updateAvatar(avatar: String): Int! @hasRole(role: ADMIN)
+  # updateName update name for current user. Remove name if name is null.
+  updateName(name: String): Int! @hasRole(role: ADMIN)
+  # updateUsername update username for current user.
+  updateUsername(username: String!): Int! @hasRole(role: ADMIN)
+  # updatePassword update password for current user. currentPassword is needed to authenticate. Return new token.
+  updatePassword(currentPassword: String!, newPassword: String!): String!
+    @hasRole(role: ADMIN)
+
+  # updateConfig allows to partially update global config with given id.
+  updateConfig(id: ID!, global: globalInput!): Config! @hasRole(role: ADMIN)
+  # updateDns is to update dns config with given id.
+  updateDns(id: ID!, dns: String!): Dns! @hasRole(role: ADMIN)
+  # updateRouting is to update routing config with given id.
+  updateRouting(id: ID!, routing: String!): Routing! @hasRole(role: ADMIN)
+
+  # renameConfig is to give the config a new name.
+  renameConfig(id: ID!, name: String!): Int! @hasRole(role: ADMIN)
+  # renameDns is to give the dns config a new name.
+  renameDns(id: ID!, name: String!): Int! @hasRole(role: ADMIN)
+  # renameRouting is to give the routing config a new name.
+  renameRouting(id: ID!, name: String!): Int! @hasRole(role: ADMIN)
+
+  # removeConfig is to remove a config with given config ID.
+  removeConfig(id: ID!): Int! @hasRole(role: ADMIN)
+  # removeDns is to remove a dns config with given dns ID.
+  removeDns(id: ID!): Int! @hasRole(role: ADMIN)
+  # removeRouting is to remove a routing config with given routing ID.
+  removeRouting(id: ID!): Int! @hasRole(role: ADMIN)
+
+  # selectConfig is to select a config as the current config.
+  selectConfig(id: ID!): Int! @hasRole(role: ADMIN)
+  # selectConfig is to select a dns config as the current dns.
+  selectDns(id: ID!): Int! @hasRole(role: ADMIN)
+  # selectConfig is to select a routing config as the current routing.
+  selectRouting(id: ID!): Int! @hasRole(role: ADMIN)
+
+  # run proxy with selected config+dns+routing. Dry-run can be used to stop the proxy.
+  run(dry: Boolean!): Int! @hasRole(role: ADMIN)
+
+  # importNodes is to import nodes with no subscription ID. rollbackError means abort the import on error.
+  importNodes(
+    rollbackError: Boolean!
+    args: [ImportArgument!]!
+  ): [NodeImportResult!]! @hasRole(role: ADMIN)
+
+  # updateNode is to update a node with no subscription ID.
+  updateNode(id: ID!, newLink: String!): Node! @hasRole(role: ADMIN)
+
+  # removeNodes is to remove nodes that have no subscription ID.
+  removeNodes(ids: [ID!]!): Int! @hasRole(role: ADMIN)
+
+  # tagNode is to give the node a new tag.
+  tagNode(id: ID!, tag: String!): Int! @hasRole(role: ADMIN)
+
+  # importSubscription is to fetch and resolve the subscription into nodes.
+  importSubscription(
+    rollbackError: Boolean!
+    arg: ImportArgument!
+  ): SubscriptionImportResult! @hasRole(role: ADMIN)
+
+  # removeSubscriptions is to remove subscriptions with given ID list.
+  removeSubscriptions(ids: [ID!]!): Int! @hasRole(role: ADMIN)
+
+  # tagSubscription is to give the subscription a new tag.
+  tagSubscription(id: ID!, tag: String!): Int! @hasRole(role: ADMIN)
+
+  # updateSubscription is to re-fetch subscription and resolve subscription into nodes. Old nodes that independently belong to any groups will not be removed.
+  updateSubscription(id: ID!): Subscription! @hasRole(role: ADMIN)
+
+  # createGroup is to create a group.
+  createGroup(
+    name: String!
+    policy: Policy!
+    policyParams: [PolicyParam!]
+  ): Group! @hasRole(role: ADMIN)
+
+  # groupSetPolicy is to set the group a new policy.
+  groupSetPolicy(id: ID!, policy: Policy!, policyParams: [PolicyParam!]): Int!
+    @hasRole(role: ADMIN)
+
+  # groupAddSubscriptions is to add subscriptions to the group.
+  groupAddSubscriptions(id: ID!, subscriptionIDs: [ID!]!): Int!
+    @hasRole(role: ADMIN)
+
+  # groupDelSubscriptions is to remove subscriptions from the group.
+  groupDelSubscriptions(id: ID!, subscriptionIDs: [ID!]!): Int!
+    @hasRole(role: ADMIN)
+
+  # groupAddNodes is to add nodes to the group. Nodes will not be removed from its subscription when subscription update.
+  groupAddNodes(id: ID!, nodeIDs: [ID!]!): Int! @hasRole(role: ADMIN)
+
+  # groupDelNodes is to remove nodes from the group.
+  groupDelNodes(id: ID!, nodeIDs: [ID!]!): Int! @hasRole(role: ADMIN)
+
+  # renameGroup is to rename a group.
+  renameGroup(id: ID!, name: String!): Int! @hasRole(role: ADMIN)
+
+  # removeGroup is to remove a group.
+  removeGroup(id: ID!): Int! @hasRole(role: ADMIN)
+}
+enum Role {
+  admin
+}
+input ImportArgument {
+  link: String!
+  tag: String
+}
+type NodeImportResult {
+  link: String!
+  error: String
+  node: Node
+}
+type SubscriptionImportResult {
+  link: String!
+  nodeImportResult: [NodeImportResult!]!
+  sub: Subscription!
+}
+input PolicyParam {
+  key: String
+  val: String!
+}
+type ConfigFlatDesc {
+  name: String!
+  mapping: String!
+  isArray: Boolean!
+  defaultValue: String!
+  required: Boolean!
+  type: String!
+  desc: String!
+}
+
+type General {
+  dae: Dae!
+  interfaces(up: Boolean): [Interface!]!
+  schema: String!
+}
+type Dae {
+  running: Boolean!
+  # modified indicates whether the running config has been modified.
+  modified: Boolean!
+  version: String!
+}
+type Interface {
+  name: String!
+  flag: InterfaceFlag!
+  ifindex: Int!
+  ip(onlyGlobalScope: Boolean): [String!]!
+}
+type InterfaceFlag {
+  up: Boolean!
+  default: [DefaultRoute!]
+}
+type DefaultRoute {
+  ipVersion: String!
+  gateway: String
+  source: String
+}
+
+type Config {
+  id: ID!
+  name: String!
+  global: Global!
+  selected: Boolean!
+}
+type Global {
+  tproxyPort: Int!
+  tproxyPortProtect: Boolean!
+  soMarkFromDae: Int!
+  logLevel: String!
+  tcpCheckUrl: [String!]!
+  tcpCheckHttpMethod: String!
+  udpCheckDns: [String!]!
+  checkInterval: String!
+  checkTolerance: String!
+  lanInterface: [String!]!
+  wanInterface: [String!]!
+  allowInsecure: Boolean!
+  dialMode: String!
+  disableWaitingNetwork: Boolean!
+  autoConfigKernelParameter: Boolean!
+  autoConfigFirewallRule: Boolean!
+  sniffingTimeout: String!
+  tlsImplementation: String!
+  utlsImitate: String!
+}
+
+input globalInput {
+  tproxyPort: Int
+  tproxyPortProtect: Boolean
+  soMarkFromDae: Int
+  logLevel: String
+  tcpCheckUrl: [String!]
+  tcpCheckHttpMethod: String
+  udpCheckDns: [String!]
+  checkInterval: String
+  checkTolerance: String
+  lanInterface: [String!]
+  wanInterface: [String!]
+  allowInsecure: Boolean
+  dialMode: String
+  disableWaitingNetwork: Boolean
+  autoConfigKernelParameter: Boolean
+  autoConfigFirewallRule: Boolean
+  sniffingTimeout: String
+  tlsImplementation: String
+  utlsImitate: String
+}
+
+type Group {
+  id: ID!
+  name: String!
+  nodes: [Node!]!
+  subscriptions: [Subscription!]!
+  policy: Policy!
+  policyParams: [Param!]!
+}
+enum Policy {
+  random
+  fixed
+  min_avg10
+  min_moving_avg
+  min
+}
+
+type Routing {
+  id: ID!
+  name: String!
+  routing: DaeRouting!
+  selected: Boolean!
+  referenceGroups: [String!]!
+}
+type DaeRouting {
+  string: String!
+  rules: [RoutingRule!]!
+  fallback: FunctionOrPlaintext!
+}
+type RoutingRule {
+  conditions: AndFunctions!
+  outbound: Function!
+}
+type Function {
+  name: String!
+  not: Boolean!
+  params: [Param!]!
+}
+type Param {
+  key: String!
+  val: String!
+}
+
+type AndFunctions {
+  and: [Function!]!
+}
+
+type Plaintext {
+  val: String!
+}
+
+union AndFunctionsOrPlaintext = AndFunctions | Plaintext
+union FunctionOrPlaintext = Function | Plaintext
+
+type Dns {
+  id: ID!
+  name: String!
+  dns: DaeDns!
+  selected: Boolean!
+}
+type DaeDns {
+  string: String!
+  upstream: [Param!]!
+  routing: DnsRouting!
+}
+type DnsRouting {
+  request: DaeRouting!
+  response: DaeRouting!
+}
+
+type PageInfo {
+  startCursor: ID
+  endCursor: ID
+  hasNextPage: Boolean!
+}
+
+type Node {
+  id: ID!
+  link: String!
+  name: String!
+  address: String!
+  protocol: String!
+  tag: String
+  subscriptionID: ID
+}
+type NodesConnection {
+  totalCount: Int!
+  edges: [Node!]!
+  pageInfo: PageInfo!
+}
+
+type Subscription {
+  id: ID!
+  updatedAt: String!
+  tag: String
+  link: String!
+  status: String!
+  info: String!
+  nodes(first: Int, after: ID): NodesConnection!
+}
+
+type User {
+  username: String!
+  name: String
+  avatar: String
+}

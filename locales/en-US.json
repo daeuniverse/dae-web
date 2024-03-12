@@ -1,0 +1,13 @@
+{
+  "routing": "Routing",
+  "dns": "DNS",
+  "config": "Config",
+  "group": "Group",
+  "node": "Node",
+  "subscription": "Subscription",
+
+  "software options": "Software Options",
+  "interface and kernel options": "Interface and Kernel Options",
+  "node connectivity check": "Node Connectivity Check",
+  "connecting options": "Connecting Options"
+}
