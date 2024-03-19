@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FormErrorEvent, FormSubmitEvent } from '#ui/types'
+import type { Form, FormErrorEvent, FormSubmitEvent } from '#ui/types'
 import { z } from 'zod'
 
 withDefaults(
@@ -41,6 +41,8 @@ const schema = z.object({
 })
 
 type Schema = z.output<typeof schema>
+
+const formRef = ref<Form<Schema>>()
 
 const initialState = () =>
   ({
@@ -139,7 +141,6 @@ const { state: wanInterfaceOptions, isLoading: isWanInterfaceLoading } =
   useAsyncState(async () => {
     const interfaces = await apiStore.apiClient?.query(
       graphql(`
-        # @ts-ignore
         query General($up: Boolean) {
           general {
             interfaces(up: $up) {
@@ -222,7 +223,10 @@ enum UTLSImitate {
   qq_11_1 = 'qq_11_1'
 }
 
-const onReset = () => Object.assign(state, initialState())
+const onReset = () => {
+  formRef.value?.clear()
+  Object.assign(state, initialState())
+}
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   isLoading.value = true
@@ -280,16 +284,10 @@ defineExpose({
 
 <template>
   <UModal>
-    <UForm
-      ref="configsFormRef"
-      :schema
-      :state
-      @submit="onSubmit"
-      @error="onError"
-    >
+    <UForm ref="formRef" :schema :state @submit="onSubmit" @error="onError">
       <UCard>
         <template #header>
-          <UFormGroup label="Name">
+          <UFormGroup label="Name" name="name">
             <UInput v-model="state.name" />
           </UFormGroup>
         </template>

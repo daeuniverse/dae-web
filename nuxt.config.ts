@@ -6,7 +6,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/fonts',
     'nuxt-monaco-editor',
-    'nuxt-zod-i18n',
     '@nuxtjs/i18n',
     '@nuxt/ui'
   ],
