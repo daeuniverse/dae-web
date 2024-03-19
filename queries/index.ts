@@ -1,5 +1,3 @@
-import { graphql } from 'gql.tada'
-
 export const numberUsers = graphql(`
   query NumberUsers {
     numberUsers

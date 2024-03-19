@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { ConfigFormModal } from '#components'
-import { graphql } from 'gql.tada'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
 
-const isCreateConfigModalOpen = ref(false)
-const createConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
-const isUpdateConfigFormModalOpen = ref(false)
-const updateConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
+const isCreateModalOpen = ref(false)
+const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
+const isUpdateFormModalOpen = ref(false)
+const updateFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
 const { state: configs, execute: refetchConfigs } = useAsyncState(async () => {
   const data = await apiStore.apiClient?.query(queries.configs, {})
@@ -40,11 +39,7 @@ const removeConfig = async (id: string | number) => {
 
 <template>
   <div class="space-y-2">
-    <UButton
-      block
-      icon="i-heroicons-plus"
-      @click="isCreateConfigModalOpen = true"
-    />
+    <UButton block icon="i-heroicons-plus" @click="isCreateModalOpen = true" />
 
     <UCard v-for="config in configs" :key="config.id">
       <template #header>
@@ -58,7 +53,7 @@ const removeConfig = async (id: string | number) => {
             icon="i-heroicons-pencil"
             @click="
               () => {
-                updateConfigFormModalRef?.setValues({
+                updateFormModalRef?.setValues({
                   name: config.name,
                   checkIntervalSeconds: deriveTime(
                     config.global.checkInterval as string,
@@ -75,7 +70,7 @@ const removeConfig = async (id: string | number) => {
                   ...config.global
                 })
 
-                isUpdateConfigFormModalOpen = true
+                isUpdateFormModalOpen = true
               }
             "
           />
@@ -91,27 +86,27 @@ const removeConfig = async (id: string | number) => {
     </UCard>
 
     <ConfigFormModal
-      ref="createConfigFormModalRef"
-      v-model="isCreateConfigModalOpen"
+      ref="createFormModalRef"
+      v-model="isCreateModalOpen"
       type="create"
       @submit="
         async () => {
           await refetchConfigs()
 
-          isCreateConfigModalOpen = false
+          isCreateModalOpen = false
         }
       "
     />
 
     <ConfigFormModal
-      ref="updateConfigFormModalRef"
-      v-model="isUpdateConfigFormModalOpen"
+      ref="updateFormModalRef"
+      v-model="isUpdateFormModalOpen"
       type="update"
       @submit="
         async () => {
           await refetchConfigs()
 
-          isUpdateConfigFormModalOpen = false
+          isUpdateFormModalOpen = false
         }
       "
     />

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { FormErrorEvent, FormSubmitEvent } from '#ui/types'
-import { graphql } from 'gql.tada'
 import { z } from 'zod'
 
 withDefaults(
@@ -140,6 +139,7 @@ const { state: wanInterfaceOptions, isLoading: isWanInterfaceLoading } =
   useAsyncState(async () => {
     const interfaces = await apiStore.apiClient?.query(
       graphql(`
+        # @ts-ignore
         query General($up: Boolean) {
           general {
             interfaces(up: $up) {
@@ -266,10 +266,6 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 const onError = (event: FormErrorEvent) => {
   console.log('error', event, state)
 }
-
-watch(state, (state) => {
-  console.log(state)
-})
 
 defineExpose({
   setValues(values?: Schema) {

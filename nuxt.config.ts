@@ -10,6 +10,14 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/ui'
   ],
+  imports: {
+    presets: [
+      {
+        from: 'gql.tada',
+        imports: ['graphql']
+      }
+    ]
+  },
   i18n: {
     defaultLocale: 'zh_Hans',
     langDir: 'locales',

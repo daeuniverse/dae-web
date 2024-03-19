@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ConfigFormModal } from '#components'
-import { graphql } from 'gql.tada'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()

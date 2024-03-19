@@ -166,5 +166,5 @@ routing {
     }
   }
 
-  return { endpointURL, token, apiClient, login, initialize }
+  return { endpointURL, token, apiClient, login, getDefaults, initialize }
 })

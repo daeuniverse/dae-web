@@ -1,5 +1,3 @@
-import { graphql } from 'gql.tada'
-
 export const setJsonStorage = graphql(`
   mutation SetJsonStorage($paths: [String!]!, $values: [String!]!) {
     setJsonStorage(paths: $paths, values: $values)

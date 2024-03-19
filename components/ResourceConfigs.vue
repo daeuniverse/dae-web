@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ConfigFormModal } from '#components'
-import { graphql } from 'gql.tada'
 
 const apiStore = useAPIStore()
+const defaults = await apiStore.getDefaults()
 
 const isCreateConfigModalOpen = ref(false)
 const createConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
@@ -111,6 +111,7 @@ const removeConfig = async (id: string | number) => {
 
           <UButton
             :loading="isRemovingConfig"
+            :disabled="config.id === defaults?.defaultConfigID"
             size="xs"
             icon="i-heroicons-minus"
             @click="removeConfig(config.id)"
