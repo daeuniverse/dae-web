@@ -3,8 +3,8 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 export const useAPIStore = defineStore('api', () => {
-  const endpointURL = useCookie('endpointURL')
-  const token = useCookie('token')
+  const endpointURL = useCookie('endpointURL', { sameSite: true })
+  const token = useCookie('token', { sameSite: true })
 
   const apiClient = computed(() => {
     if (!endpointURL.value) return null

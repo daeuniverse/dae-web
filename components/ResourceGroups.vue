@@ -3,6 +3,7 @@ import type { ConfigFormModal } from '#components'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
+const defaults = await apiStore.getDefaults()
 
 const isCreateModalOpen = ref(false)
 const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
@@ -41,9 +42,9 @@ const removeGroup = async (id: string | number) => {
   <div class="space-y-2">
     <UButton block icon="i-heroicons-plus" @click="isCreateModalOpen = true" />
 
-    <UCard v-for="config in groups" :key="config.id">
+    <UCard v-for="group in groups" :key="group.id">
       <template #header>
-        {{ config.name }}
+        {{ group.name }}
       </template>
 
       <template #footer>
@@ -60,9 +61,10 @@ const removeGroup = async (id: string | number) => {
 
           <UButton
             :loading="isRemovingGroup"
+            :disabled="group.id === defaults?.defaultGroupID"
             size="xs"
             icon="i-heroicons-minus"
-            @click="removeGroup(config.id)"
+            @click="removeGroup(group.id)"
           />
         </div>
       </template>
