@@ -98,6 +98,9 @@ dependencies:
   tailwindcss:
     specifier: ^3.4.1
     version: 3.4.1
+  typescript:
+    specifier: ^5.4.2
+    version: 5.4.2
   vue:
     specifier: ^3.4.21
     version: 3.4.21(typescript@5.4.2)

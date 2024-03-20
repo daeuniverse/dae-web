@@ -43,6 +43,7 @@
     "sort-package-json": "^2.8.0",
     "splitpanes": "^3.1.5",
     "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "zod": "^3.22.4"
