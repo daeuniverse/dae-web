@@ -1,17 +1,20 @@
-FROM oven/bun:1 as builder
+FROM node as builder
 
 WORKDIR /build
 ENV HUSKY=0
 
 COPY . .
 
-RUN bun install
-RUN bun run build
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
 
-FROM oven/bun:1 as runner
+RUN pnpm install
+RUN pnpm build
+
+FROM node as runner
 
 WORKDIR /app
 
 COPY --from=builder /build/.output .
 
-CMD ["bun", "./.output/server/index.mjs"]
+CMD ["node", "./server/index.mjs"]

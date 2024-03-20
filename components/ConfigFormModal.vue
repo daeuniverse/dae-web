@@ -117,8 +117,8 @@ const logLevelOptions = [
   }
 ]
 
-const { state: lanInterfaceOptions, isLoading: isLanInterfaceLoading } =
-  useAsyncState(async () => {
+const { data: lanInterfaceOptions, pending: isLanInterfaceLoading } =
+  useAsyncData('lanInterface', async () => {
     const interfaces = await apiStore.apiClient?.query(
       graphql(`
         query General($up: Boolean) {
@@ -135,10 +135,10 @@ const { state: lanInterfaceOptions, isLoading: isLanInterfaceLoading } =
     )
 
     return interfaces?.data?.general.interfaces.map(({ name }) => name)
-  }, [])
+  })
 
-const { state: wanInterfaceOptions, isLoading: isWanInterfaceLoading } =
-  useAsyncState(async () => {
+const { data: wanInterfaceOptions, pending: isWanInterfaceLoading } =
+  useAsyncData('wanInterface', async () => {
     const interfaces = await apiStore.apiClient?.query(
       graphql(`
         query General($up: Boolean) {
@@ -165,7 +165,7 @@ const { state: wanInterfaceOptions, isLoading: isWanInterfaceLoading } =
         .filter(({ flag }) => !!flag.default)
         .map(({ name }) => name) || [])
     ]
-  }, [])
+  })
 
 enum TcpCheckHttpMethod {
   CONNECT = 'CONNECT',

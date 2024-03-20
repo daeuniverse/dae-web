@@ -10,11 +10,14 @@ const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 const isUpdateFormModalOpen = ref(false)
 const updateFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
-const { state: groups, execute: refetchGroups } = useAsyncState(async () => {
-  const data = await apiStore.apiClient?.query(queries.groups, {})
+const { data: groups, execute: reloadGroups } = useAsyncData(
+  'groups',
+  async () => {
+    const data = await apiStore.apiClient?.query(queries.groups, {})
 
-  return data?.data?.groups
-}, [])
+    return data?.data?.groups
+  }
+)
 
 const isRemovingGroup = ref(false)
 
@@ -31,7 +34,7 @@ const removeGroup = async (id: string | number) => {
       { id }
     )
 
-    await refetchGroups()
+    await reloadGroups()
   } finally {
     isRemovingGroup.value = false
   }
@@ -76,7 +79,7 @@ const removeGroup = async (id: string | number) => {
       type="create"
       @submit="
         async () => {
-          await refetchGroups()
+          await reloadGroups()
 
           isCreateModalOpen = false
         }
@@ -89,7 +92,7 @@ const removeGroup = async (id: string | number) => {
       type="update"
       @submit="
         async () => {
-          await refetchGroups()
+          await reloadGroups()
 
           isUpdateFormModalOpen = false
         }

@@ -9,41 +9,44 @@ const createConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 const isUpdateConfigFormModalOpen = ref(false)
 const updateConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
-const { state: configs, execute: refetchConfigs } = useAsyncState(async () => {
-  const data = await apiStore.apiClient?.query(
-    graphql(`
-      query Configs {
-        configs {
-          id
-          name
-          selected
-          global {
-            logLevel
-            tproxyPort
-            allowInsecure
-            checkInterval
-            checkTolerance
-            lanInterface
-            wanInterface
-            udpCheckDns
-            tcpCheckUrl
-            dialMode
-            tcpCheckHttpMethod
-            disableWaitingNetwork
-            autoConfigKernelParameter
-            sniffingTimeout
-            tlsImplementation
-            utlsImitate
-            tproxyPortProtect
+const { data: configs, execute: reloadConfigs } = useAsyncData(
+  'configs',
+  async () => {
+    const data = await apiStore.apiClient?.query(
+      graphql(`
+        query Configs {
+          configs {
+            id
+            name
+            selected
+            global {
+              logLevel
+              tproxyPort
+              allowInsecure
+              checkInterval
+              checkTolerance
+              lanInterface
+              wanInterface
+              udpCheckDns
+              tcpCheckUrl
+              dialMode
+              tcpCheckHttpMethod
+              disableWaitingNetwork
+              autoConfigKernelParameter
+              sniffingTimeout
+              tlsImplementation
+              utlsImitate
+              tproxyPortProtect
+            }
           }
         }
-      }
-    `),
-    {}
-  )
+      `),
+      {}
+    )
 
-  return data?.data?.configs
-}, [])
+    return data?.data?.configs
+  }
+)
 
 const isRemovingConfig = ref(false)
 
@@ -60,7 +63,7 @@ const removeConfig = async (id: string | number) => {
       { id }
     )
 
-    await refetchConfigs()
+    await reloadConfigs()
   } finally {
     isRemovingConfig.value = false
   }
@@ -126,7 +129,7 @@ const removeConfig = async (id: string | number) => {
       type="create"
       @submit="
         async () => {
-          await refetchConfigs()
+          await reloadConfigs()
 
           isCreateConfigModalOpen = false
         }
@@ -139,7 +142,7 @@ const removeConfig = async (id: string | number) => {
       type="update"
       @submit="
         async () => {
-          await refetchConfigs()
+          await reloadConfigs()
 
           isUpdateConfigFormModalOpen = false
         }

@@ -9,11 +9,14 @@ const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 const isUpdateFormModalOpen = ref(false)
 const updateFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
-const { state: configs, execute: refetchConfigs } = useAsyncState(async () => {
-  const data = await apiStore.apiClient?.query(queries.configs, {})
+const { data: configs, execute: reloadConfigs } = useAsyncData(
+  'configs',
+  async () => {
+    const data = await apiStore.apiClient?.query(queries.configs, {})
 
-  return data?.data?.configs
-}, [])
+    return data?.data?.configs
+  }
+)
 
 const isRemovingConfig = ref(false)
 
@@ -30,7 +33,7 @@ const removeConfig = async (id: string | number) => {
       { id }
     )
 
-    await refetchConfigs()
+    await reloadConfigs()
   } finally {
     isRemovingConfig.value = false
   }
@@ -91,7 +94,7 @@ const removeConfig = async (id: string | number) => {
       type="create"
       @submit="
         async () => {
-          await refetchConfigs()
+          await reloadConfigs()
 
           isCreateModalOpen = false
         }
@@ -104,7 +107,7 @@ const removeConfig = async (id: string | number) => {
       type="update"
       @submit="
         async () => {
-          await refetchConfigs()
+          await reloadConfigs()
 
           isUpdateFormModalOpen = false
         }

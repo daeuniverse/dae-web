@@ -82,7 +82,29 @@ export const useAPIStore = defineStore('api', () => {
     if (!defaultConfigID) {
       const { data } = await client.mutation(mutations.createConfig, {
         name: 'global',
-        global: {}
+        global: {
+          logLevel: 'info',
+          tproxyPort: 12345,
+          tproxyPortProtect: true,
+          allowInsecure: false,
+          checkInterval: '30s',
+          checkTolerance: '0ms',
+          sniffingTimeout: '0ms',
+          lanInterface: [],
+          wanInterface: ['auto'],
+          udpCheckDns: ['dns.google.com:53', '8.8.8.8', '2001:4860:4860::8888'],
+          tcpCheckUrl: [
+            'http://cp.cloudflare.com',
+            '1.1.1.1',
+            '2606:4700:4700::1111'
+          ],
+          dialMode: 'domain',
+          tcpCheckHttpMethod: 'HEAD',
+          disableWaitingNetwork: false,
+          autoConfigKernelParameter: false,
+          tlsImplementation: 'tls',
+          utlsImitate: 'randomized'
+        }
       })
 
       if (data?.createConfig.id) {

@@ -22,6 +22,7 @@
     "@shikijs/monaco": "^1.2.0",
     "@types/lodash-es": "^4.17.12",
     "@urql/core": "^4.3.0",
+    "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "commitlint": "^19.2.1",
     "dayjs": "^1.11.10",
