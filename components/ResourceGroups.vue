@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ConfigFormModal } from '#components'
+import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
@@ -25,14 +26,7 @@ const removeGroup = async (id: string | number) => {
   isRemovingGroup.value = true
 
   try {
-    await apiStore.apiClient?.mutation(
-      graphql(`
-        mutation RemoveConfig($id: ID!) {
-          removeConfig(id: $id)
-        }
-      `),
-      { id }
-    )
+    await apiStore.apiClient?.mutation(mutations.removeGroup, { id })
 
     await reloadGroups()
   } finally {

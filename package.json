@@ -12,10 +12,10 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@0no-co/graphqlsp": "^1.6.0",
+    "@0no-co/graphqlsp": "^1.6.1",
     "@commitlint/config-conventional": "^19.1.0",
     "@nuxt/eslint-config": "^0.2.0",
-    "@nuxt/fonts": "^0.3.0",
+    "@nuxt/fonts": "^0.4.0",
     "@nuxt/ui": "^2.14.2",
     "@nuxtjs/i18n": "^8.2.0",
     "@pinia/nuxt": "^0.5.1",
@@ -33,7 +33,7 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "lodash-es": "^4.17.21",
-    "monaco-editor": "^0.44.0",
+    "monaco-editor": "^0.45.0",
     "nuxt": "^3.11.1",
     "nuxt-monaco-editor": "^1.2.7",
     "nuxt-zod-i18n": "^1.4.0",
@@ -43,7 +43,7 @@
     "sort-package-json": "^2.8.0",
     "splitpanes": "^3.1.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "zod": "^3.22.4"

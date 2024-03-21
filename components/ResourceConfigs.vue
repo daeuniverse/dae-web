@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { ConfigFormModal } from '#components'
+import * as mutations from '~/mutations'
+import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
 const defaults = await apiStore.getDefaults()
@@ -12,37 +14,7 @@ const updateConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 const { data: configs, execute: reloadConfigs } = useAsyncData(
   'configs',
   async () => {
-    const data = await apiStore.apiClient?.query(
-      graphql(`
-        query Configs {
-          configs {
-            id
-            name
-            selected
-            global {
-              logLevel
-              tproxyPort
-              allowInsecure
-              checkInterval
-              checkTolerance
-              lanInterface
-              wanInterface
-              udpCheckDns
-              tcpCheckUrl
-              dialMode
-              tcpCheckHttpMethod
-              disableWaitingNetwork
-              autoConfigKernelParameter
-              sniffingTimeout
-              tlsImplementation
-              utlsImitate
-              tproxyPortProtect
-            }
-          }
-        }
-      `),
-      {}
-    )
+    const data = await apiStore.apiClient?.query(queries.configs, {})
 
     return data?.data?.configs
   }
@@ -54,18 +26,25 @@ const removeConfig = async (id: string | number) => {
   isRemovingConfig.value = true
 
   try {
-    await apiStore.apiClient?.mutation(
-      graphql(`
-        mutation RemoveConfig($id: ID!) {
-          removeConfig(id: $id)
-        }
-      `),
-      { id }
-    )
+    await apiStore.apiClient?.mutation(mutations.removeConfig, { id })
 
     await reloadConfigs()
   } finally {
     isRemovingConfig.value = false
+  }
+}
+
+const isSelectingConfig = ref(false)
+
+const selectConfig = async (id: string | number) => {
+  isSelectingConfig.value = true
+
+  try {
+    await apiStore.apiClient?.mutation(mutations.selectConfig, { id })
+
+    await reloadConfigs()
+  } finally {
+    isSelectingConfig.value = false
   }
 }
 </script>
@@ -114,10 +93,20 @@ const removeConfig = async (id: string | number) => {
 
           <UButton
             :loading="isRemovingConfig"
-            :disabled="config.id === defaults?.defaultConfigID"
+            :disabled="
+              config.id === defaults?.defaultConfigID || config.selected
+            "
             size="xs"
             icon="i-heroicons-minus"
             @click="removeConfig(config.id)"
+          />
+
+          <UButton
+            :loading="isSelectingConfig"
+            :disabled="config.selected"
+            size="xs"
+            icon="i-heroicons-map-pin"
+            @click="selectConfig(config.id)"
           />
         </div>
       </template>
