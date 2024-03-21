@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Form, FormErrorEvent, FormSubmitEvent } from '#ui/types'
+import { isEqual } from 'lodash-es'
 import { z } from 'zod'
 
 withDefaults(
@@ -223,6 +224,8 @@ enum UTLSImitate {
   qq_11_1 = 'qq_11_1'
 }
 
+const isResetDisabled = computed(() => isEqual(state, initialState()))
+
 const onReset = () => {
   formRef.value?.clear()
   Object.assign(state, initialState())
@@ -324,8 +327,15 @@ defineExpose({
                   :loading="isLanInterfaceLoading"
                   :options="lanInterfaceOptions"
                   multiple
-                  placeholder="Select LanInterfaces"
-                />
+                >
+                  <template #label>
+                    <span v-if="state.lanInterface.length" class="truncate">
+                      {{ state.lanInterface.join(', ') }}
+                    </span>
+
+                    <span v-else>Select LanInterfaces</span>
+                  </template>
+                </USelectMenu>
               </UFormGroup>
 
               <UFormGroup label="wanInterface">
@@ -334,8 +344,15 @@ defineExpose({
                   :loading="isWanInterfaceLoading"
                   :options="wanInterfaceOptions"
                   multiple
-                  placeholder="Select wanInterfaces"
-                />
+                >
+                  <template #label>
+                    <span v-if="state.wanInterface.length" class="truncate">
+                      {{ state.wanInterface.join(', ') }}
+                    </span>
+
+                    <span v-else>Select WanInterfaces</span>
+                  </template>
+                </USelectMenu>
               </UFormGroup>
 
               <UFormGroup label="autoConfigKernelParameter">
@@ -461,7 +478,9 @@ defineExpose({
 
         <template #footer>
           <div class="flex justify-end gap-2">
-            <UButton color="black" @click="onReset"> Reset </UButton>
+            <UButton :disabled="isResetDisabled" color="black" @click="onReset">
+              Reset
+            </UButton>
             <UButton :loading="isLoading" type="submit">Submit</UButton>
           </div>
         </template>
