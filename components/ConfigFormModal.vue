@@ -2,6 +2,8 @@
 import type { Form, FormErrorEvent, FormSubmitEvent } from '#ui/types'
 import { isEqual } from 'lodash-es'
 import { z } from 'zod'
+import * as mutations from '~/mutations'
+import * as queries from '~/queries'
 
 withDefaults(
   defineProps<{
@@ -120,45 +122,18 @@ const logLevelOptions = [
 
 const { data: lanInterfaceOptions, pending: isLanInterfaceLoading } =
   useAsyncData('lanInterface', async () => {
-    const interfaces = await apiStore.apiClient?.query(
-      graphql(`
-        query General($up: Boolean) {
-          general {
-            interfaces(up: $up) {
-              name
-              ifindex
-              ip
-            }
-          }
-        }
-      `),
-      { up: true }
-    )
+    const interfaces = await apiStore.apiClient?.query(queries.general, {
+      up: true
+    })
 
     return interfaces?.data?.general.interfaces.map(({ name }) => name)
   })
 
 const { data: wanInterfaceOptions, pending: isWanInterfaceLoading } =
   useAsyncData('wanInterface', async () => {
-    const interfaces = await apiStore.apiClient?.query(
-      graphql(`
-        query General($up: Boolean) {
-          general {
-            interfaces(up: $up) {
-              name
-              ifindex
-              ip
-              flag {
-                default {
-                  gateway
-                }
-              }
-            }
-          }
-        }
-      `),
-      { up: true }
-    )
+    const interfaces = await apiStore.apiClient?.query(queries.general, {
+      up: true
+    })
 
     return [
       'auto',
@@ -243,24 +218,15 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       ...global
     } = event.data
 
-    await apiStore.apiClient?.mutation(
-      graphql(`
-        mutation CreateConfig($name: String, $global: globalInput) {
-          createConfig(name: $name, global: $global) {
-            id
-          }
-        }
-      `),
-      {
-        name,
-        global: {
-          checkInterval: `${checkIntervalSeconds}s`,
-          checkTolerance: `${checkToleranceMS}ms`,
-          sniffingTimeout: `${sniffingTimeoutMS}ms`,
-          ...global
-        }
+    await apiStore.apiClient?.mutation(mutations.createConfig, {
+      name,
+      global: {
+        checkInterval: `${checkIntervalSeconds}s`,
+        checkTolerance: `${checkToleranceMS}ms`,
+        sniffingTimeout: `${sniffingTimeoutMS}ms`,
+        ...global
       }
-    )
+    })
 
     onReset()
 

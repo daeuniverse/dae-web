@@ -21,28 +21,32 @@ const { t } = useI18n()
 
 const tabsItems = [
   {
-    label: t('groups'),
-    slot: 'groups'
+    label: t('group'),
+    slot: 'group'
   },
   {
-    label: t('routings'),
-    slot: 'routings'
+    label: t('routing'),
+    slot: 'routing'
   },
   {
-    label: t('configs'),
-    slot: 'configs'
+    label: t('dns'),
+    slot: 'dns'
+  },
+  {
+    label: t('config'),
+    slot: 'config'
   }
 ]
 
 const accordionItems = [
   {
-    label: t('subscriptions'),
-    slot: 'subscriptions',
+    label: t('subscription'),
+    slot: 'subscription',
     defaultOpen: true
   },
   {
-    label: t('nodes'),
-    slot: 'nodes'
+    label: t('node'),
+    slot: 'node'
   }
 ]
 </script>
@@ -50,27 +54,29 @@ const accordionItems = [
 <template>
   <div class="flex flex-col items-center gap-2">
     <UTabs :items="tabsItems" class="w-full">
-      <template #groups>
-        <ResourceGroups />
+      <template #group>
+        <ResourceGroup />
       </template>
 
-      <template #routings>
-        <UCard>
-          <CodeEditor v-model="value" class="h-[50dvh]" lang="routingA" />
-        </UCard>
+      <template #routing>
+        <ResourceRouting />
       </template>
 
-      <template #configs>
-        <ResourceConfigs />
+      <template #dns>
+        <ResourceDNS />
+      </template>
+
+      <template #config>
+        <ResourceConfig />
       </template>
     </UTabs>
 
     <UAccordion :items="accordionItems">
-      <template #subscriptions>
+      <template #subscription>
         <div>b</div>
       </template>
 
-      <template #nodes>
+      <template #node>
         <div>a</div>
       </template>
     </UAccordion>
