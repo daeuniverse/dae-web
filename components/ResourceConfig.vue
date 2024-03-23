@@ -4,7 +4,7 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const defaults = await apiStore.getDefaults()
+const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
 
 const isCreateConfigModalOpen = ref(false)
 const createConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
@@ -22,7 +22,7 @@ const { data: configs, execute: reloadConfigs } = useAsyncData(
 
 const isRemovingConfig = ref(false)
 
-const removeConfig = async (id: string | number) => {
+const removeConfig = async (id: string) => {
   isRemovingConfig.value = true
 
   try {
@@ -36,7 +36,7 @@ const removeConfig = async (id: string | number) => {
 
 const isSelectingConfig = ref(false)
 
-const selectConfig = async (id: string | number) => {
+const selectConfig = async (id: string) => {
   isSelectingConfig.value = true
 
   try {

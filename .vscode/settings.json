@@ -1,5 +1,6 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["randomizedalpn", "randomizednoalpn"],
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": ["randomizedalpn", "randomizednoalpn"]
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vue.server.hybridMode": false
 }

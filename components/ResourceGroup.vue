@@ -4,7 +4,7 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const defaults = await apiStore.getDefaults()
+const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
 
 const isCreateModalOpen = ref(false)
 const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
@@ -22,7 +22,7 @@ const { data: groups, execute: reloadGroups } = useAsyncData(
 
 const isRemovingGroup = ref(false)
 
-const removeGroup = async (id: string | number) => {
+const removeGroup = async (id: string) => {
   isRemovingGroup.value = true
 
   try {

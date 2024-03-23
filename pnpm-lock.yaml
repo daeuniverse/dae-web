@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@0no-co/graphqlsp':
-    specifier: ^1.7.0
-    version: 1.7.0
+    specifier: ^1.7.1
+    version: 1.7.1(typescript@5.4.3)
   '@commitlint/config-conventional':
     specifier: ^19.1.0
     version: 19.1.0
@@ -47,6 +47,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.10
     version: 1.11.10
+  env-paths:
+    specifier: ^3.0.0
+    version: 3.0.0
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -57,8 +60,8 @@ dependencies:
     specifier: ^5.1.3
     version: 5.1.3(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.2.5)
   gql.tada:
-    specifier: ^1.4.0
-    version: 1.4.0
+    specifier: ^1.4.1
+    version: 1.4.1(typescript@5.4.3)
   husky:
     specifier: ^9.0.11
     version: 9.0.11
@@ -124,14 +127,17 @@ packages:
         optional: true
     dev: false
 
-  /@0no-co/graphqlsp@1.7.0:
+  /@0no-co/graphqlsp@1.7.1(typescript@5.4.3):
     resolution:
       {
-        integrity: sha512-goXV03Dz/fFmrSsFVb4/Dpzx+Md4G4cQaeo0wXnd6ucCK+/JzmKVqmGLYBqTEJKbLH1pu4YY8Fl7glFcV/sL+w==
+        integrity: sha512-3qSrQegPwjdJH24iaCIb8JP2OtZ3pcO74AQjruTPH632q1/ahAC1+b36y7ynGxb67ikOe+7T3pb+N+Z1+r06Ag==
       }
+    peerDependencies:
+      typescript: ^5.0.0
     dependencies:
       '@gql.tada/internal': 0.1.0
       node-fetch: 2.7.0
+      typescript: 5.4.3
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -1578,14 +1584,17 @@ packages:
     engines: { node: '>=14' }
     dev: false
 
-  /@gql.tada/cli-utils@0.3.0:
+  /@gql.tada/cli-utils@0.3.1(typescript@5.4.3):
     resolution:
       {
-        integrity: sha512-kDebLVuM5r3/bI1MmlhHr9VKHxXeq8Gxy1wHVTPva4R5ObfbhzxnHsTCvR6MUp8ziy9Pg9MESb8S1YZW8ohM3A==
+        integrity: sha512-Eq7lV0059AqqdM8TL53k3gtxKWQ+aPAG3Nn8ZyTZUM5DNniwqH3CHnHg+pTR67Q51rX8CXRpyAXEHlJvS8GvqQ==
       }
+    peerDependencies:
+      typescript: ^5.0.0
     dependencies:
-      '@gql.tada/internal': 0.1.0
+      '@gql.tada/internal': 0.1.1(typescript@5.4.3)
       graphql: 16.8.1
+      typescript: 5.4.3
     dev: false
 
   /@gql.tada/internal@0.1.0:
@@ -1593,6 +1602,18 @@ packages:
       {
         integrity: sha512-FTvBVXVvt0xUo8hvRlwFoyeNXpUDqc+e20MzFkF8ozbsa5PoYb/gksmmnHMjUphsIq1H3Hq8o4RGstFN5LKH4w==
       }
+    dependencies:
+      graphql: 16.8.1
+      typescript: 5.4.3
+    dev: false
+
+  /@gql.tada/internal@0.1.1(typescript@5.4.3):
+    resolution:
+      {
+        integrity: sha512-2TrWcoluLySDBKKoGAGWQzXhiF2Vaz9xyfqsAP25Uz/xKmuFm+Nxpma6oLlwRec7lArNiRu9u7Vi1GjLik1UfA==
+      }
+    peerDependencies:
+      typescript: ^5.0.0
     dependencies:
       graphql: 16.8.1
       typescript: 5.4.3
@@ -5830,6 +5851,14 @@ packages:
     engines: { node: '>=6' }
     dev: false
 
+  /env-paths@3.0.0:
+    resolution:
+      {
+        integrity: sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==
+      }
+    engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
+    dev: false
+
   /err-code@2.0.3:
     resolution:
       {
@@ -6823,16 +6852,19 @@ packages:
       unicorn-magic: 0.1.0
     dev: false
 
-  /gql.tada@1.4.0:
+  /gql.tada@1.4.1(typescript@5.4.3):
     resolution:
       {
-        integrity: sha512-/LZJmInJQESn0QafOrDCJRk9ASeI65caU/HmarPtcSNitNWBrH7UfNOsHtISnTTA/CS80eUYqy3M4ogasFZWPQ==
+        integrity: sha512-AnDA26jbbyc4COiNzovgEwI1XKmRz4F5XoFFSI8Gh6TQqqzulOVNafv/1l8/C5S/iIqV9uwQmy33AJ89peCLBg==
       }
     hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
     dependencies:
       '@0no-co/graphql.web': 1.0.4
-      '@gql.tada/cli-utils': 0.3.0
-      '@gql.tada/internal': 0.1.0
+      '@gql.tada/cli-utils': 0.3.1(typescript@5.4.3)
+      '@gql.tada/internal': 0.1.1(typescript@5.4.3)
+      typescript: 5.4.3
     transitivePeerDependencies:
       - graphql
     dev: false

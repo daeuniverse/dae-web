@@ -3,7 +3,7 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const defaults = await apiStore.getDefaults()
+const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
 
 const { data: dnss, execute: reloadDNSs } = useAsyncData(
   'routings',
@@ -16,7 +16,7 @@ const { data: dnss, execute: reloadDNSs } = useAsyncData(
 
 const isRemovingDNS = ref(false)
 
-const removeDNS = async (id: string | number) => {
+const removeDNS = async (id: string) => {
   isRemovingDNS.value = true
 
   try {
@@ -30,7 +30,7 @@ const removeDNS = async (id: string | number) => {
 
 const isSelectingDNS = ref(false)
 
-const selectDNS = async (id: string | number) => {
+const selectDNS = async (id: string) => {
   isSelectingDNS.value = true
 
   try {

@@ -3,7 +3,7 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const defaults = await apiStore.getDefaults()
+const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
 
 const { data: routings, execute: reloadRoutings } = useAsyncData(
   'routings',
@@ -16,7 +16,7 @@ const { data: routings, execute: reloadRoutings } = useAsyncData(
 
 const isRemovingRouting = ref(false)
 
-const removeRouting = async (id: string | number) => {
+const removeRouting = async (id: string) => {
   isRemovingRouting.value = true
 
   try {
@@ -30,7 +30,7 @@ const removeRouting = async (id: string | number) => {
 
 const isSelectingRouting = ref(false)
 
-const selectRouting = async (id: string | number) => {
+const selectRouting = async (id: string) => {
   isSelectingRouting.value = true
 
   try {
