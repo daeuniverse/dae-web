@@ -45,7 +45,9 @@ const selectRouting = async (id: string) => {
 
 <template>
   <div class="space-y-2">
-    <UButton block icon="i-heroicons-plus" />
+    <div class="flex justify-end">
+      <UButton icon="i-heroicons-plus" />
+    </div>
 
     <UCard v-for="routing in routings" :key="routing.id">
       <template #header>

@@ -37,7 +37,9 @@ const removeGroup = async (id: string) => {
 
 <template>
   <div class="space-y-2">
-    <UButton block icon="i-heroicons-plus" @click="isCreateModalOpen = true" />
+    <div class="flex justify-end">
+      <UButton icon="i-heroicons-plus" @click="isCreateModalOpen = true" />
+    </div>
 
     <UCard v-for="group in groups" :key="group.id">
       <template #header>

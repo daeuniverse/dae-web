@@ -51,11 +51,12 @@ const selectConfig = async (id: string) => {
 
 <template>
   <div class="space-y-2">
-    <UButton
-      block
-      icon="i-heroicons-plus"
-      @click="isCreateConfigModalOpen = true"
-    />
+    <div class="flex justify-end">
+      <UButton
+        icon="i-heroicons-plus"
+        @click="isCreateConfigModalOpen = true"
+      />
+    </div>
 
     <UCard v-for="config in configs" :key="config.id">
       <template #header>

@@ -52,7 +52,7 @@ const accordionItems = [
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-2">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-start">
     <UTabs :items="tabsItems" class="w-full">
       <template #group>
         <ResourceGroup />
