@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { FormErrorEvent, FormSubmitEvent } from '#ui/types'
+import dayjs from 'dayjs'
+import type { ResultOf } from 'gql.tada'
 import { z } from 'zod'
 import * as mutations from '~/mutations'
 import * as queries from '~/queries'
@@ -31,12 +33,23 @@ const initialState = () =>
 
 const state = reactive<Schema>(initialState())
 
-const { data: subscriptions, execute } = useAsyncData(async () =>
+const selected = ref<ResultOf<typeof queries.subscriptions>['subscriptions']>(
+  []
+)
+
+const {
+  data: subscriptions,
+  pending: isLoading,
+  execute
+} = useAsyncData(async () =>
   (
     await apiStore.apiClient?.query(queries.subscriptions, {})
   )?.data?.subscriptions.map((subscription) => ({
     id: subscription.id,
-    link: subscription.link
+    tag: subscription.tag,
+    nodes: subscription.nodes.edges.length,
+    link: subscription.link,
+    updatedAt: dayjs(subscription.updatedAt).format('YYYY-MM:DD HH:mm:ss')
   }))
 )
 
@@ -61,6 +74,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 const onError = (event: FormErrorEvent) => {
   console.log(event)
 }
+
+watch(selected, (selected) => {
+  console.log(selected)
+})
 </script>
 
 <template>
@@ -72,7 +89,9 @@ const onError = (event: FormErrorEvent) => {
       />
     </div>
 
-    <UTable :rows="subscriptions" />
+    <ClientOnly>
+      <UTable v-model="selected" :rows="subscriptions" :loading="isLoading" />
+    </ClientOnly>
 
     <UModal v-model="isSubscriptionModalOpen">
       <UForm
@@ -93,6 +112,7 @@ const onError = (event: FormErrorEvent) => {
               <UInput
                 class="w-full"
                 :value="tag"
+                placeholder="tag"
                 @input="
                   (event: InputEvent) =>
                     (state.importSubscriptions[index].tag = (
@@ -104,6 +124,7 @@ const onError = (event: FormErrorEvent) => {
               <UInput
                 class="w-full"
                 :value="link"
+                placeholder="link"
                 @input="
                   (event: InputEvent) =>
                     (state.importSubscriptions[index].link = (
