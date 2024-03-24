@@ -235,13 +235,13 @@ export const run = graphql(`
 `)
 
 export const updateAvatar = graphql(`
-  mutation UpdateAvatar($avatar: String) {
+  mutation UpdateAvatar($avatar: String!) {
     updateAvatar(avatar: $avatar)
   }
 `)
 
 export const updateName = graphql(`
-  mutation UpdateName($name: String) {
+  mutation UpdateName($name: String!) {
     updateName(name: $name)
   }
 `)

@@ -1,6 +1,3 @@
-scalar Duration
-scalar Time
-
 directive @hasRole(role: Role!) on FIELD_DEFINITION
 
 schema {
@@ -216,8 +213,8 @@ type Global {
   tcpCheckUrl: [String!]!
   tcpCheckHttpMethod: String!
   udpCheckDns: [String!]!
-  checkInterval: Duration!
-  checkTolerance: Duration!
+  checkInterval: String!
+  checkTolerance: String!
   lanInterface: [String!]!
   wanInterface: [String!]!
   allowInsecure: Boolean!
@@ -225,7 +222,7 @@ type Global {
   disableWaitingNetwork: Boolean!
   autoConfigKernelParameter: Boolean!
   autoConfigFirewallRule: Boolean!
-  sniffingTimeout: Duration!
+  sniffingTimeout: String!
   tlsImplementation: String!
   utlsImitate: String!
 }
@@ -238,8 +235,8 @@ input globalInput {
   tcpCheckUrl: [String!]
   tcpCheckHttpMethod: String
   udpCheckDns: [String!]
-  checkInterval: Duration
-  checkTolerance: Duration
+  checkInterval: String
+  checkTolerance: String
   lanInterface: [String!]
   wanInterface: [String!]
   allowInsecure: Boolean
@@ -247,7 +244,7 @@ input globalInput {
   disableWaitingNetwork: Boolean
   autoConfigKernelParameter: Boolean
   autoConfigFirewallRule: Boolean
-  sniffingTimeout: Duration
+  sniffingTimeout: String
   tlsImplementation: String
   utlsImitate: String
 }
@@ -344,7 +341,7 @@ type NodesConnection {
 
 type Subscription {
   id: ID!
-  updatedAt: Time!
+  updatedAt: String!
   tag: String
   link: String!
   status: String!
