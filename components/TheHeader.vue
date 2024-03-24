@@ -170,6 +170,7 @@ const isDark = computed({
                   ref="avatarFileInputRef"
                   type="file"
                   class="absolute inset-0 overflow-hidden opacity-0"
+                  accept="image/*"
                   @change="onAvatarChange"
                 />
               </UButton>

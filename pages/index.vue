@@ -73,11 +73,11 @@ const accordionItems = [
 
     <UAccordion :items="accordionItems">
       <template #subscription>
-        <div>b</div>
+        <ResourceSubscription />
       </template>
 
       <template #node>
-        <div>a</div>
+        <ResourceNode />
       </template>
     </UAccordion>
   </div>
