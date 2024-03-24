@@ -331,17 +331,28 @@ defineExpose({
             <div class="space-y-2">
               <UFormGroup label="tcpCheckUrl">
                 <div class="space-y-2">
-                  <UInput
+                  <div
                     v-for="(url, index) in state.tcpCheckUrl"
                     :key="index"
-                    :value="url"
-                    @input="
-                      (event: InputEvent) =>
-                        (state.tcpCheckUrl[index] = (
-                          event.target as HTMLInputElement
-                        ).value)
-                    "
-                  />
+                    class="flex items-center gap-2"
+                  >
+                    <UInput
+                      class="w-full"
+                      :value="url"
+                      @input="
+                        (event: InputEvent) =>
+                          (state.tcpCheckUrl[index] = (
+                            event.target as HTMLInputElement
+                          ).value)
+                      "
+                    />
+
+                    <UButton
+                      size="xs"
+                      icon="i-heroicons-minus"
+                      @click="state.udpCheckDns.splice(index, 1)"
+                    />
+                  </div>
 
                   <div class="flex justify-end">
                     <UButton
