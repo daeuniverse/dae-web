@@ -90,6 +90,16 @@ const dropdownItems = [
     }
   ]
 ]
+
+const colorMode = useColorMode()
+const isDark = computed({
+  get() {
+    return colorMode.value === 'dark'
+  },
+  set() {
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  }
+})
 </script>
 
 <template>
@@ -97,28 +107,40 @@ const dropdownItems = [
     <TextLogo />
 
     <ClientOnly>
-      <UDropdown
-        :items="dropdownItems"
-        :ui="{ item: { disabled: 'cursor-text select-text' } }"
-        :popper="{ placement: 'bottom-start' }"
-      >
-        <UAvatar size="md" :src="state.avatar" :alt="state.name" />
+      <div class="flex items-center gap-4">
+        <UButton
+          :icon="
+            isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
+          "
+          color="gray"
+          variant="ghost"
+          aria-label="Theme"
+          @click="isDark = !isDark"
+        />
 
-        <template #account>
-          <span class="truncate font-medium text-gray-900 dark:text-white">
-            {{ user?.username }}
-          </span>
-        </template>
+        <UDropdown
+          :items="dropdownItems"
+          :ui="{ item: { disabled: 'cursor-text select-text' } }"
+          :popper="{ placement: 'bottom-start' }"
+        >
+          <UAvatar size="md" :src="state.avatar" :alt="state.name" />
 
-        <template #item="{ item }">
-          <span class="truncate">{{ item.label }}</span>
+          <template #account>
+            <span class="truncate font-medium text-gray-900 dark:text-white">
+              {{ user?.username }}
+            </span>
+          </template>
 
-          <UIcon
-            :name="item.icon"
-            class="ms-auto h-4 w-4 flex-shrink-0 text-gray-400 dark:text-gray-500"
-          />
-        </template>
-      </UDropdown>
+          <template #item="{ item }">
+            <span class="truncate">{{ item.label }}</span>
+
+            <UIcon
+              :name="item.icon"
+              class="ms-auto h-4 w-4 flex-shrink-0 text-gray-400 dark:text-gray-500"
+            />
+          </template>
+        </UDropdown>
+      </div>
     </ClientOnly>
 
     <UModal v-model="isSettingsModalOpen">
