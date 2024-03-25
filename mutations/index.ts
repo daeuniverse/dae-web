@@ -220,11 +220,9 @@ export const updateSubscription = graphql(`
   }
 `)
 
-export const removeSubscription = graphql(`
-  mutation UpdateSubscription($id: ID!) {
-    updateSubscription(id: $id) {
-      id
-    }
+export const removeSubscriptions = graphql(`
+  mutation RemoveSubscriptions($ids: [ID!]!) {
+    removeSubscriptions(ids: $ids)
   }
 `)
 

@@ -46,14 +46,15 @@ const accordionItems = [
   },
   {
     label: t('node'),
-    slot: 'node'
+    slot: 'node',
+    defaultOpen: true
   }
 ]
 </script>
 
 <template>
   <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
-    <UTabs :items="tabsItems" class="w-full sm:w-1/2">
+    <UTabs :items="tabsItems" class="w-full flex-shrink-0 sm:w-1/2">
       <template #group>
         <ResourceGroup />
       </template>
@@ -71,7 +72,11 @@ const accordionItems = [
       </template>
     </UTabs>
 
-    <UAccordion :items="accordionItems" class="w-full sm:w-1/2">
+    <UAccordion
+      :items="accordionItems"
+      multiple
+      class="w-full flex-shrink-0 sm:w-1/2"
+    >
       <template #subscription>
         <ResourceSubscription />
       </template>

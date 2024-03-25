@@ -45,15 +45,31 @@ const {
   (
     await apiStore.apiClient?.query(queries.subscriptions, {})
   )?.data?.subscriptions.map((subscription) => ({
-    id: subscription.id,
-    tag: subscription.tag,
+    ...subscription,
     nodes: subscription.nodes.edges.length,
-    link: subscription.link,
     updatedAt: dayjs(subscription.updatedAt).format('YYYY-MM:DD HH:mm:ss')
   }))
 )
 
+const isRemoving = ref(false)
+
+const onRemove = async () => {
+  isRemoving.value = true
+
+  await apiStore.apiClient?.mutation(mutations.removeSubscriptions, {
+    ids: selected.value.map((subscription) => subscription.id)
+  })
+
+  await execute()
+
+  isRemoving.value = false
+}
+
+const isSubmitting = ref(false)
+
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
+  isSubmitting.value = true
+
   const { importSubscriptions } = event.data
 
   for (const { tag, link } of importSubscriptions) {
@@ -68,21 +84,25 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 
   await execute()
 
+  isSubmitting.value = false
   isSubscriptionModalOpen.value = false
 }
 
 const onError = (event: FormErrorEvent) => {
   console.log(event)
 }
-
-watch(selected, (selected) => {
-  console.log(selected)
-})
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="flex justify-end">
+    <div class="flex justify-end gap-2">
+      <UButton
+        :loading="isRemoving"
+        :disabled="!selected.length"
+        icon="i-heroicons-minus"
+        @click="onRemove"
+      />
+
       <UButton
         icon="i-heroicons-link"
         @click="isSubscriptionModalOpen = true"
@@ -156,7 +176,7 @@ watch(selected, (selected) => {
 
           <template #footer>
             <div class="flex justify-end gap-2">
-              <UButton type="submit">Confirm</UButton>
+              <UButton :loading="isSubmitting" type="submit">Confirm</UButton>
             </div>
           </template>
         </UCard>
