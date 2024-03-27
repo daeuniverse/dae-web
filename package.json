@@ -41,7 +41,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "shiki": "^1.2.0",
-    "sort-package-json": "^2.8.0",
+    "sort-package-json": "^2.9.0",
     "splitpanes": "^3.1.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.3",
