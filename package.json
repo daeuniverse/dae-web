@@ -40,7 +40,7 @@
     "nuxt-zod-i18n": "^1.4.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
-    "shiki": "^1.2.0",
+    "shiki": "^1.2.1",
     "sort-package-json": "^2.8.0",
     "splitpanes": "^3.1.5",
     "tailwindcss": "^3.4.1",
