@@ -16,7 +16,7 @@
     "@commitlint/config-conventional": "^19.1.0",
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxt/fonts": "^0.5.1",
-    "@nuxt/ui": "^2.14.2",
+    "@nuxt/ui": "^2.15.0",
     "@nuxtjs/i18n": "^8.2.0",
     "@pinia/nuxt": "^0.5.1",
     "@shikijs/monaco": "^1.2.0",
