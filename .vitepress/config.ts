@@ -5,6 +5,7 @@ export default defineConfig({
   title: 'dae-web',
   description: 'A VitePress Site',
   srcDir: 'docs',
+  base: '/dae-web',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
