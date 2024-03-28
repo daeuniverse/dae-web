@@ -1,3 +1,5 @@
+// 全局 API Store
+
 import { Client, fetchExchange } from '@urql/core'
 import * as mutations from '~/mutations'
 import * as queries from '~/queries'

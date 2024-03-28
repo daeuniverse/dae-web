@@ -1,15 +1,20 @@
+// graphql query
+
+// 用户数量
 export const numberUsers = graphql(`
   query NumberUsers {
     numberUsers
   }
 `)
 
+// 获取登陆 token
 export const token = graphql(`
   query Token($username: String!, $password: String!) {
     token(username: $username, password: $password)
   }
 `)
 
+// 获取用户信息
 export const user = graphql(`
   query User {
     user {
@@ -20,12 +25,14 @@ export const user = graphql(`
   }
 `)
 
+// 获取 JSON 对象存储
 export const jsonStorage = graphql(`
   query JsonStorage($paths: [String!]) {
     jsonStorage(paths: $paths)
   }
 `)
 
+// 获取常规信息
 export const general = graphql(`
   query General($up: Boolean) {
     general {
@@ -52,6 +59,7 @@ export const general = graphql(`
   }
 `)
 
+// 获取配置列表
 export const configs = graphql(`
   query Configs {
     configs {
@@ -82,6 +90,7 @@ export const configs = graphql(`
   }
 `)
 
+// 获取群组列表
 export const groups = graphql(`
   query Groups {
     groups {
@@ -129,6 +138,7 @@ export const groups = graphql(`
   }
 `)
 
+// 获取路由列表
 export const routings = graphql(`
   query Routings {
     routings {
@@ -142,6 +152,7 @@ export const routings = graphql(`
   }
 `)
 
+// 获取 DNS 列表
 export const dnss = graphql(`
   query DNSs {
     dnss {
@@ -166,6 +177,7 @@ export const dnss = graphql(`
   }
 `)
 
+// 获取节点列表
 export const nodes = graphql(`
   query Nodes {
     nodes {
@@ -181,6 +193,7 @@ export const nodes = graphql(`
   }
 `)
 
+// 获取订阅列表
 export const subscriptions = graphql(`
   query Subscriptions {
     subscriptions {
