@@ -41,14 +41,19 @@ const {
   data: subscriptions,
   pending: isLoading,
   execute
-} = useAsyncData(async () =>
-  (
-    await apiStore.apiClient?.query(queries.subscriptions, {})
-  )?.data?.subscriptions.map((subscription) => ({
-    ...subscription,
-    nodes: subscription.nodes.edges.length,
-    updatedAt: dayjs(subscription.updatedAt).format('YYYY-MM:DD HH:mm:ss')
-  }))
+} = useAsyncData(
+  'subscriptions',
+  async () =>
+    (
+      await apiStore.apiClient?.query(queries.subscriptions, {})
+    )?.data?.subscriptions.map((subscription) => ({
+      ...subscription,
+      nodes: subscription.nodes.edges.length,
+      updatedAt: dayjs(subscription.updatedAt).format('YYYY-MM:DD HH:mm:ss')
+    })),
+  {
+    default: () => []
+  }
 )
 
 const isRemoving = ref(false)
@@ -94,20 +99,22 @@ const onError = (event: FormErrorEvent) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <div class="flex justify-end gap-2">
-      <UButton
-        :loading="isRemoving"
-        :disabled="!selected.length"
-        icon="i-heroicons-minus"
-        @click="onRemove"
-      />
+  <UCard>
+    <template #header>
+      <div class="flex justify-end gap-2">
+        <UButton
+          :loading="isRemoving"
+          :disabled="!selected.length"
+          icon="i-heroicons-minus"
+          @click="onRemove"
+        />
 
-      <UButton
-        icon="i-heroicons-link"
-        @click="isSubscriptionModalOpen = true"
-      />
-    </div>
+        <UButton
+          icon="i-heroicons-link"
+          @click="isSubscriptionModalOpen = true"
+        />
+      </div>
+    </template>
 
     <ClientOnly>
       <UTable v-model="selected" :rows="subscriptions" :loading="isLoading" />
@@ -182,5 +189,5 @@ const onError = (event: FormErrorEvent) => {
         </UCard>
       </UForm>
     </UModal>
-  </div>
+  </UCard>
 </template>

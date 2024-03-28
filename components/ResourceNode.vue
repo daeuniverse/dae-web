@@ -39,8 +39,12 @@ const {
   pending: isLoading,
   execute
 } = useAsyncData(
+  'nodes',
   async () =>
-    (await apiStore.apiClient?.query(queries.nodes, {}))?.data?.nodes.edges
+    (await apiStore.apiClient?.query(queries.nodes, {}))?.data?.nodes.edges,
+  {
+    default: () => []
+  }
 )
 
 const isRemoving = ref(false)
@@ -80,17 +84,19 @@ const onError = (event: FormErrorEvent) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <div class="flex justify-end gap-2">
-      <UButton
-        :loading="isRemoving"
-        :disabled="!selected.length"
-        icon="i-heroicons-minus"
-        @click="onRemove"
-      />
+  <UCard>
+    <template #header>
+      <div class="flex justify-end gap-2">
+        <UButton
+          :loading="isRemoving"
+          :disabled="!selected.length"
+          icon="i-heroicons-minus"
+          @click="onRemove"
+        />
 
-      <UButton icon="i-heroicons-link" @click="isNodeModalOpen = true" />
-    </div>
+        <UButton icon="i-heroicons-link" @click="isNodeModalOpen = true" />
+      </div>
+    </template>
 
     <ClientOnly>
       <UTable v-model="selected" :rows="nodes" :loading="isLoading" />
@@ -165,5 +171,5 @@ const onError = (event: FormErrorEvent) => {
         </UCard>
       </UForm>
     </UModal>
-  </div>
+  </UCard>
 </template>

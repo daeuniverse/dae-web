@@ -66,10 +66,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         />
       </UFormGroup>
 
-      <div class="space-x-4">
-        <UButton :loading="isLoading" type="submit">Login</UButton>
+      <div class="flex items-center space-x-4">
+        <UButton :loading="isLoading" type="submit" icon="i-tabler:login">
+          Login
+        </UButton>
 
-        <UButton>Sign Up</UButton>
+        <UButton icon="i-tabler:user-plus">Sign Up</UButton>
       </div>
     </UForm>
   </UCard>

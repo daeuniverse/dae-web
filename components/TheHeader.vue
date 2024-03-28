@@ -7,6 +7,7 @@ import * as queries from '~/queries'
 const apiStore = useAPIStore()
 
 const { data: user, execute } = useAsyncData(
+  'user',
   async () => (await apiStore.apiClient?.query(queries.user, {}))?.data?.user
 )
 
@@ -85,6 +86,7 @@ const dropdownItems = [
       async click() {
         apiStore.endpointURL = ''
         apiStore.token = ''
+
         await navigateTo('/setup', { replace: true })
       }
     }

@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxt/ui'
   ],
+  nitro: {
+    experimental: {
+      websocket: true
+    }
+  },
   imports: {
     presets: [
       {
