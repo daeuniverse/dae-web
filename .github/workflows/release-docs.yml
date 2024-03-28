@@ -32,8 +32,6 @@ jobs:
           node-version: latest
 
       - uses: actions/configure-pages@v4
-        with:
-          static_site_generator: nuxt
 
       - run: pnpm install
       - run: pnpm docs:build
