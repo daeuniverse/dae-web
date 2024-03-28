@@ -46,6 +46,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           class="w-full"
           type="url"
           icon="i-heroicons-cloud"
+          placeholder="http://127.0.0.1:2023/graphql"
         />
       </UFormGroup>
 
@@ -56,6 +57,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           class="w-full"
           type="text"
           icon="i-heroicons-user"
+          placeholder="daeuniverse"
         />
       </UFormGroup>
 
@@ -66,6 +68,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           class="w-full"
           type="password"
           icon="i-heroicons-lock-closed"
+          placeholder="dae-web"
         />
       </UFormGroup>
 

@@ -125,7 +125,7 @@ const isDark = computed({
           :ui="{ item: { disabled: 'cursor-text select-text' } }"
           :popper="{ placement: 'bottom-start' }"
         >
-          <UAvatar size="md" :src="state.avatar" :alt="state.name" />
+          <UAvatar :src="state.avatar" :alt="state.name" />
 
           <template #account>
             <span class="truncate font-medium text-gray-900 dark:text-white">
