@@ -6,6 +6,9 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "docs:build": "vitepress build",
+    "docs:dev": "vitepress dev",
+    "docs:preview": "vitepress preview",
     "generate": "nuxt generate",
     "postinstall": "nuxt prepare",
     "prepare": "husky",
@@ -45,6 +48,7 @@
     "splitpanes": "^3.1.5",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.3",
+    "vitepress": "^1.0.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "zod": "^3.22.4"
