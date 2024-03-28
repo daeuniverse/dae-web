@@ -39,6 +39,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 <template>
   <UCard class="mx-auto max-w-screen-sm">
     <UForm :schema :state class="space-y-4" @submit="onSubmit">
+      <!-- dae-wing 后端 API 地址 -->
       <UFormGroup label="Endpoint URL" name="endpointURL">
         <UInput
           v-model="state.endpointURL"
@@ -48,6 +49,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         />
       </UFormGroup>
 
+      <!-- 用户名 -->
       <UFormGroup label="Username" name="username">
         <UInput
           v-model="state.username"
@@ -57,6 +59,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
         />
       </UFormGroup>
 
+      <!-- 密码 -->
       <UFormGroup label="Password" name="password">
         <UInput
           v-model="state.password"
@@ -67,10 +70,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
       </UFormGroup>
 
       <div class="flex items-center space-x-4">
+        <!-- 登陆 -->
         <UButton :loading="isLoading" type="submit" icon="i-tabler:login">
           Login
         </UButton>
 
+        <!-- 注册 -->
         <UButton icon="i-tabler:user-plus">Sign Up</UButton>
       </div>
     </UForm>

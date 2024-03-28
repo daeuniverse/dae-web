@@ -8,6 +8,7 @@ const props = defineProps<{
   options?: Monaco.editor.IStandaloneEditorConstructionOptions
 }>()
 
+// RoutingA textmate 语法定义
 const languageRoutingA: Monaco.languages.IMonarchLanguage = {
   // set defaultToken as `invalid` to turn on debug mode
   // defaultToken: 'invalid',

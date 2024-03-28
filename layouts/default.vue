@@ -1,11 +1,8 @@
 <template>
   <UContainer>
+    <!-- 顶部标头 -->
     <TheHeader />
 
     <slot />
   </UContainer>
 </template>
-
-<style>
-@import 'splitpanes/dist/splitpanes.css';
-</style>
