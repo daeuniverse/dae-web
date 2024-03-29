@@ -3,16 +3,15 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
-
-const { data: dnss, execute: reloadDNSs } = useAsyncData(
-  'routings',
-  async () => {
-    const data = await apiStore.apiClient?.query(queries.dnss, {})
-
-    return data?.data?.dnss
-  }
+const { data: defaults } = useAsyncData('defaults', () =>
+  apiStore.getDefaults()
 )
+
+const { data: dnss, execute: reloadDNSs } = useAsyncData('dnss', async () => {
+  const data = await apiStore.apiClient?.query(queries.dnss, {})
+
+  return data?.data?.dnss
+})
 
 const isRemovingDNS = ref(false)
 
@@ -46,7 +45,7 @@ const selectDNS = async (id: string) => {
 <template>
   <div class="space-y-2">
     <div class="flex justify-end">
-      <UButton icon="i-heroicons-plus" />
+      <UButton icon="i-heroicons:plus" />
     </div>
 
     <UCard v-for="dns in dnss" :key="dns.id">
@@ -60,7 +59,7 @@ const selectDNS = async (id: string) => {
             :loading="isRemovingDNS"
             :disabled="dns.id === defaults?.defaultDNSID || dns.selected"
             size="xs"
-            icon="i-heroicons-minus"
+            icon="i-heroicons:minus"
             @click="removeDNS(dns.id)"
           />
 
@@ -68,7 +67,7 @@ const selectDNS = async (id: string) => {
             :loading="isSelectingDNS"
             :disabled="dns.selected"
             size="xs"
-            icon="i-heroicons-map-pin"
+            icon="i-heroicons:map-pin"
             @click="selectDNS(dns.id)"
           />
         </div>

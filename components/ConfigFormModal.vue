@@ -5,15 +5,6 @@ import { z } from 'zod'
 import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
-withDefaults(
-  defineProps<{
-    type: 'create' | 'update'
-  }>(),
-  {
-    type: 'create'
-  }
-)
-
 const emit = defineEmits<{
   (event: 'submit'): void
 }>()
@@ -47,33 +38,30 @@ type Schema = z.output<typeof schema>
 
 const formRef = ref<Form<Schema>>()
 
-const initialState = () =>
-  ({
-    name: '',
-    logLevel: 'info',
-    tproxyPort: 12345,
-    tproxyPortProtect: true,
-    allowInsecure: false,
-    checkIntervalSeconds: 30,
-    checkToleranceMS: 0,
-    sniffingTimeoutMS: 0,
-    lanInterface: [],
-    wanInterface: ['auto'],
-    udpCheckDns: ['dns.google.com:53', '8.8.8.8', '2001:4860:4860::8888'],
-    tcpCheckUrl: [
-      'http://cp.cloudflare.com',
-      '1.1.1.1',
-      '2606:4700:4700::1111'
-    ],
-    dialMode: 'domain',
-    tcpCheckHttpMethod: 'HEAD',
-    disableWaitingNetwork: false,
-    autoConfigKernelParameter: false,
-    tlsImplementation: 'tls',
-    utlsImitate: 'randomized'
-  }) satisfies Schema
+const initialState = ref<Schema>({
+  name: '',
+  logLevel: 'info',
+  tproxyPort: 12345,
+  tproxyPortProtect: true,
+  allowInsecure: false,
+  checkIntervalSeconds: 30,
+  checkToleranceMS: 0,
+  sniffingTimeoutMS: 0,
+  lanInterface: [],
+  wanInterface: ['auto'],
+  udpCheckDns: ['dns.google.com:53', '8.8.8.8', '2001:4860:4860::8888'],
+  tcpCheckUrl: ['http://cp.cloudflare.com', '1.1.1.1', '2606:4700:4700::1111'],
+  dialMode: 'domain',
+  tcpCheckHttpMethod: 'HEAD',
+  disableWaitingNetwork: false,
+  autoConfigKernelParameter: false,
+  tlsImplementation: 'tls',
+  utlsImitate: 'randomized'
+})
 
-const state = reactive<Schema>(initialState())
+const state = reactive<Schema>({
+  ...initialState.value
+})
 
 const { t } = useI18n()
 
@@ -199,11 +187,11 @@ enum UTLSImitate {
   qq_11_1 = 'qq_11_1'
 }
 
-const isResetDisabled = computed(() => isEqual(state, initialState()))
+const isResetDisabled = computed(() => isEqual(state, initialState.value))
 
 const onReset = () => {
   formRef.value?.clear()
-  Object.assign(state, initialState())
+  Object.assign(state, initialState.value)
 }
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
@@ -243,6 +231,7 @@ const onError = (event: FormErrorEvent) => {
 defineExpose({
   setValues(values?: Schema) {
     if (values) {
+      initialState.value = { ...values }
       Object.assign(state, { ...values })
     } else {
       onReset()
@@ -349,7 +338,7 @@ defineExpose({
 
                     <UButton
                       size="xs"
-                      icon="i-heroicons-minus"
+                      icon="i-heroicons:minus"
                       @click="state.udpCheckDns.splice(index, 1)"
                     />
                   </div>
@@ -357,7 +346,7 @@ defineExpose({
                   <div class="flex justify-end">
                     <UButton
                       size="xs"
-                      icon="i-heroicons-plus"
+                      icon="i-heroicons:plus"
                       @click="state.tcpCheckUrl.push('')"
                     />
                   </div>
@@ -391,7 +380,7 @@ defineExpose({
 
                     <UButton
                       size="xs"
-                      icon="i-heroicons-minus"
+                      icon="i-heroicons:minus"
                       @click="state.udpCheckDns.splice(index, 1)"
                     />
                   </div>
@@ -399,7 +388,7 @@ defineExpose({
                   <div class="flex justify-end">
                     <UButton
                       size="xs"
-                      icon="i-heroicons-plus"
+                      icon="i-heroicons:plus"
                       @click="state.udpCheckDns.push('')"
                     />
                   </div>

@@ -3,7 +3,13 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
+
+const isRoutingFormModalOpen = ref(false)
+const routingFormModalContent = ref('')
+
+const { data: defaults } = useAsyncData('defaults', () =>
+  apiStore.getDefaults()
+)
 
 const { data: routings, execute: reloadRoutings } = useAsyncData(
   'routings',
@@ -46,7 +52,15 @@ const selectRouting = async (id: string) => {
 <template>
   <div class="space-y-2">
     <div class="flex justify-end">
-      <UButton icon="i-heroicons-plus" />
+      <UButton
+        icon="i-heroicons:plus"
+        @click="
+          () => {
+            routingFormModalContent = ''
+            isRoutingFormModalOpen = true
+          }
+        "
+      />
     </div>
 
     <UCard v-for="routing in routings" :key="routing.id">
@@ -57,12 +71,23 @@ const selectRouting = async (id: string) => {
       <template #footer>
         <div class="flex justify-end gap-2">
           <UButton
+            size="xs"
+            icon="i-heroicons:pencil"
+            @click="
+              () => {
+                routingFormModalContent = routing.routing.string
+                isRoutingFormModalOpen = true
+              }
+            "
+          />
+
+          <UButton
             :loading="isRemovingRouting"
             :disabled="
               routing.id === defaults?.defaultRoutingID || routing.selected
             "
             size="xs"
-            icon="i-heroicons-minus"
+            icon="i-heroicons:minus"
             @click="removeRouting(routing.id)"
           />
 
@@ -70,11 +95,16 @@ const selectRouting = async (id: string) => {
             :loading="isSelectingRouting"
             :disabled="routing.selected"
             size="xs"
-            icon="i-heroicons-map-pin"
+            icon="i-heroicons:map-pin"
             @click="selectRouting(routing.id)"
           />
         </div>
       </template>
     </UCard>
+
+    <RoutingFormModal
+      v-model="isRoutingFormModalOpen"
+      v-model:content="routingFormModalContent"
+    />
   </div>
 </template>

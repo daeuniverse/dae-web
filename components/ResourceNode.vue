@@ -90,11 +90,11 @@ const onError = (event: FormErrorEvent) => {
         <UButton
           :loading="isRemoving"
           :disabled="!selected.length"
-          icon="i-heroicons-minus"
+          icon="i-heroicons:minus"
           @click="onRemove"
         />
 
-        <UButton icon="i-heroicons-link" @click="isNodeModalOpen = true" />
+        <UButton icon="i-heroicons:link" @click="isNodeModalOpen = true" />
       </div>
     </template>
 
@@ -144,7 +144,7 @@ const onError = (event: FormErrorEvent) => {
 
               <UButton
                 size="xs"
-                icon="i-heroicons-minus"
+                icon="i-heroicons:minus"
                 @click="state.importNodes.splice(index, 1)"
               />
             </div>
@@ -152,7 +152,7 @@ const onError = (event: FormErrorEvent) => {
             <div class="flex justify-end">
               <UButton
                 size="xs"
-                icon="i-heroicons-plus"
+                icon="i-heroicons:plus"
                 @click="
                   state.importNodes.push({
                     tag: '',

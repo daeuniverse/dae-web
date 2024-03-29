@@ -29,6 +29,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   try {
     const token = await apiStore.login(username, password)
     if (token) apiStore.token = token
+    await apiStore.initialize()
     await navigateTo('/', { replace: true })
   } finally {
     isLoading.value = false
@@ -45,7 +46,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           v-model="state.endpointURL"
           class="w-full"
           type="url"
-          icon="i-heroicons-cloud"
+          icon="i-heroicons:cloud"
           placeholder="http://127.0.0.1:2023/graphql"
         />
       </UFormGroup>
@@ -56,7 +57,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           v-model="state.username"
           class="w-full"
           type="text"
-          icon="i-heroicons-user"
+          icon="i-heroicons:user"
           placeholder="daeuniverse"
         />
       </UFormGroup>
@@ -67,7 +68,7 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
           v-model="state.password"
           class="w-full"
           type="password"
-          icon="i-heroicons-lock-closed"
+          icon="i-heroicons:lock-closed"
           placeholder="dae-web"
         />
       </UFormGroup>

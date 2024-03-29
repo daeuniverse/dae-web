@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const apiStore = useAPIStore()
-await apiStore.initialize()
-
 const { t } = useI18n()
 
 const tabsItems = [

@@ -75,14 +75,14 @@ const dropdownItems = [
   [
     {
       label: 'Settings',
-      icon: 'i-heroicons-cog-8-tooth',
+      icon: 'i-heroicons:cog-8-tooth',
       click() {
         isSettingsModalOpen.value = true
       }
     },
     {
       label: 'Sign out',
-      icon: 'i-heroicons-arrow-left-on-rectangle',
+      icon: 'i-heroicons:arrow-left-on-rectangle',
       async click() {
         apiStore.endpointURL = ''
         apiStore.token = ''
@@ -112,7 +112,7 @@ const isDark = computed({
       <div class="flex items-center gap-4">
         <UButton
           :icon="
-            isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'
+            isDark ? 'i-heroicons:moon-20-solid' : 'i-heroicons:sun-20-solid'
           "
           color="gray"
           variant="ghost"

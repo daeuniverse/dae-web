@@ -105,12 +105,12 @@ const onError = (event: FormErrorEvent) => {
         <UButton
           :loading="isRemoving"
           :disabled="!selected.length"
-          icon="i-heroicons-minus"
+          icon="i-heroicons:minus"
           @click="onRemove"
         />
 
         <UButton
-          icon="i-heroicons-link"
+          icon="i-heroicons:link"
           @click="isSubscriptionModalOpen = true"
         />
       </div>
@@ -162,7 +162,7 @@ const onError = (event: FormErrorEvent) => {
 
               <UButton
                 size="xs"
-                icon="i-heroicons-minus"
+                icon="i-heroicons:minus"
                 @click="state.importSubscriptions.splice(index, 1)"
               />
             </div>
@@ -170,7 +170,7 @@ const onError = (event: FormErrorEvent) => {
             <div class="flex justify-end">
               <UButton
                 size="xs"
-                icon="i-heroicons-plus"
+                icon="i-heroicons:plus"
                 @click="
                   state.importSubscriptions.push({
                     tag: '',

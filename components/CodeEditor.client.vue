@@ -4,9 +4,18 @@ import { merge } from 'lodash-es'
 import * as Monaco from 'monaco-editor'
 import { getHighlighter } from 'shiki/bundle-web.mjs'
 
-const props = defineProps<{
-  options?: Monaco.editor.IStandaloneEditorConstructionOptions
-}>()
+const value = defineModel<string>()
+
+const props = withDefaults(
+  defineProps<{
+    lang?: string
+    options?: Monaco.editor.IStandaloneEditorConstructionOptions
+  }>(),
+  {
+    lang: 'routingA',
+    options: undefined
+  }
+)
 
 // RoutingA textmate 语法定义
 const languageRoutingA: Monaco.languages.IMonarchLanguage = {
@@ -87,5 +96,5 @@ const mergedOptions =
 </script>
 
 <template>
-  <MonacoEditor :options="mergedOptions" />
+  <MonacoEditor v-model="value" :options="mergedOptions" :lang />
 </template>

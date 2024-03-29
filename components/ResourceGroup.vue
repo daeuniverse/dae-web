@@ -4,7 +4,9 @@ import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
+const { data: defaults } = useAsyncData('defaults', () =>
+  apiStore.getDefaults()
+)
 
 const isCreateModalOpen = ref(false)
 const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
@@ -38,7 +40,7 @@ const removeGroup = async (id: string) => {
 <template>
   <div class="space-y-2">
     <div class="flex justify-end">
-      <UButton icon="i-heroicons-plus" @click="isCreateModalOpen = true" />
+      <UButton icon="i-heroicons:plus" @click="isCreateModalOpen = true" />
     </div>
 
     <UCard v-for="group in groups" :key="group.id">
@@ -50,7 +52,7 @@ const removeGroup = async (id: string) => {
         <div class="flex justify-end gap-2">
           <UButton
             size="xs"
-            icon="i-heroicons-pencil"
+            icon="i-heroicons:pencil"
             @click="
               () => {
                 isUpdateFormModalOpen = true
@@ -62,7 +64,7 @@ const removeGroup = async (id: string) => {
             :loading="isRemovingGroup"
             :disabled="group.id === defaults?.defaultGroupID"
             size="xs"
-            icon="i-heroicons-minus"
+            icon="i-heroicons:minus"
             @click="removeGroup(group.id)"
           />
         </div>

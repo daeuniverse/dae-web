@@ -53,7 +53,7 @@ const selectConfig = async (id: string) => {
   <div class="space-y-2">
     <div class="flex justify-end">
       <UButton
-        icon="i-heroicons-plus"
+        icon="i-heroicons:plus"
         @click="isCreateConfigModalOpen = true"
       />
     </div>
@@ -67,24 +67,32 @@ const selectConfig = async (id: string) => {
         <div class="flex justify-end gap-2">
           <UButton
             size="xs"
-            icon="i-heroicons-pencil"
+            icon="i-heroicons:pencil"
             @click="
               () => {
+                const {
+                  checkInterval,
+                  sniffingTimeout,
+                  checkTolerance,
+                  ...global
+                } = config.global
+
                 updateConfigFormModalRef?.setValues({
                   name: config.name,
+
                   checkIntervalSeconds: deriveTime(
-                    config.global.checkInterval as string,
+                    checkInterval as string,
                     's'
                   ),
+
                   sniffingTimeoutMS: deriveTime(
-                    config.global.sniffingTimeout as string,
+                    sniffingTimeout as string,
                     'ms'
                   ),
-                  checkToleranceMS: deriveTime(
-                    config.global.checkTolerance as string,
-                    'ms'
-                  ),
-                  ...config.global
+
+                  checkToleranceMS: deriveTime(checkTolerance as string, 'ms'),
+
+                  ...global
                 })
 
                 isUpdateConfigFormModalOpen = true
@@ -98,7 +106,7 @@ const selectConfig = async (id: string) => {
               config.id === defaults?.defaultConfigID || config.selected
             "
             size="xs"
-            icon="i-heroicons-minus"
+            icon="i-heroicons:minus"
             @click="removeConfig(config.id)"
           />
 
@@ -106,7 +114,7 @@ const selectConfig = async (id: string) => {
             :loading="isSelectingConfig"
             :disabled="config.selected"
             size="xs"
-            icon="i-heroicons-map-pin"
+            icon="i-heroicons:map-pin"
             @click="selectConfig(config.id)"
           />
         </div>
@@ -116,7 +124,6 @@ const selectConfig = async (id: string) => {
     <ConfigFormModal
       ref="createConfigFormModalRef"
       v-model="isCreateConfigModalOpen"
-      type="create"
       @submit="
         async () => {
           await reloadConfigs()
@@ -129,7 +136,6 @@ const selectConfig = async (id: string) => {
     <ConfigFormModal
       ref="updateConfigFormModalRef"
       v-model="isUpdateConfigFormModalOpen"
-      type="update"
       @submit="
         async () => {
           await reloadConfigs()
