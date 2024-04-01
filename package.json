@@ -22,7 +22,7 @@
     "@nuxt/ui": "^2.15.0",
     "@nuxtjs/i18n": "^8.2.0",
     "@pinia/nuxt": "^0.5.1",
-    "@shikijs/monaco": "^1.2.1",
+    "@shikijs/monaco": "^1.2.2",
     "@types/lodash-es": "^4.17.12",
     "@urql/core": "^4.3.0",
     "@vueuse/core": "^10.9.0",
