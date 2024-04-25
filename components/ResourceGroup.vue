@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ConfigFormModal } from '#components'
 import * as mutations from '~/mutations'
 import * as queries from '~/queries'
 
@@ -9,9 +8,7 @@ const { data: defaults } = useAsyncData('defaults', () =>
 )
 
 const isCreateModalOpen = ref(false)
-const createFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 const isUpdateFormModalOpen = ref(false)
-const updateFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
 const { data: groups, execute: reloadGroups } = useAsyncData(
   'groups',
@@ -40,18 +37,17 @@ const removeGroup = async (id: string) => {
 <template>
   <div class="space-y-2">
     <div class="flex justify-end">
-      <UButton icon="i-heroicons:plus" @click="isCreateModalOpen = true" />
+      <Button icon="i-heroicons:plus" @click="isCreateModalOpen = true" />
     </div>
 
-    <UCard v-for="group in groups" :key="group.id">
+    <Card v-for="group in groups" :key="group.id">
       <template #header>
         {{ group.name }}
       </template>
 
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton
-            size="xs"
+          <Button
             icon="i-heroicons:pencil"
             @click="
               () => {
@@ -60,39 +56,14 @@ const removeGroup = async (id: string) => {
             "
           />
 
-          <UButton
+          <Button
             :loading="isRemovingGroup"
             :disabled="group.id === defaults?.defaultGroupID"
-            size="xs"
             icon="i-heroicons:minus"
             @click="removeGroup(group.id)"
           />
         </div>
       </template>
-    </UCard>
-
-    <ConfigFormModal
-      ref="createFormModalRef"
-      v-model:open="isCreateModalOpen"
-      @submit="
-        async () => {
-          await reloadGroups()
-
-          isCreateModalOpen = false
-        }
-      "
-    />
-
-    <ConfigFormModal
-      ref="updateFormModalRef"
-      v-model:open="isUpdateFormModalOpen"
-      @submit="
-        async () => {
-          await reloadGroups()
-
-          isUpdateFormModalOpen = false
-        }
-      "
-    />
+    </Card>
   </div>
 </template>

@@ -1,15 +1,9 @@
-<script setup lang="ts">
-import type { ConfigFormModal } from '#components'
-import * as mutations from '~/mutations'
+<script setup lang="tsx">
 import * as queries from '~/queries'
 
 const apiStore = useAPIStore()
-const { data: defaults } = useAsyncData(() => apiStore.getDefaults())
 
 const isCreateConfigModalOpen = ref(false)
-const createConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
-const isUpdateConfigFormModalOpen = ref(false)
-const updateConfigFormModalRef = ref<InstanceType<typeof ConfigFormModal>>()
 
 const { data: configs, execute: reloadConfigs } = useAsyncData(
   'configs',
@@ -19,126 +13,23 @@ const { data: configs, execute: reloadConfigs } = useAsyncData(
     return data?.data?.configs
   }
 )
-
-const isRemovingConfig = ref(false)
-
-const removeConfig = async (id: string) => {
-  isRemovingConfig.value = true
-
-  try {
-    await apiStore.apiClient?.mutation(mutations.removeConfig, { id })
-
-    await reloadConfigs()
-  } finally {
-    isRemovingConfig.value = false
-  }
-}
-
-const isSelectingConfig = ref(false)
-
-const selectConfig = async (id: string) => {
-  isSelectingConfig.value = true
-
-  try {
-    await apiStore.apiClient?.mutation(mutations.selectConfig, { id })
-
-    await reloadConfigs()
-  } finally {
-    isSelectingConfig.value = false
-  }
-}
 </script>
 
 <template>
   <div class="space-y-2">
     <div class="flex justify-end">
-      <Button size="icon" @click="isCreateConfigModalOpen = true">
-        <Icon name="i-heroicons:plus" />
+      <Button @click="isCreateConfigModalOpen = true">
+        <template #icon>
+          <Icon name="i-heroicons:plus" />
+        </template>
       </Button>
     </div>
 
-    <UCard v-for="config in configs" :key="config.id">
-      <template #header>
-        {{ config.name }}
-      </template>
-
-      <template #footer>
-        <div class="flex justify-end gap-2">
-          <Button
-            size="icon"
-            @click="
-              () => {
-                // const {
-                //   checkInterval,
-                //   sniffingTimeout,
-                //   checkTolerance,
-                //   ...global
-                // } = config.global
-                // updateConfigFormModalRef?.setValues({
-                //   name: config.name,
-                //   checkIntervalSeconds: deriveTime(
-                //     checkInterval as string,
-                //     's'
-                //   ),
-                //   sniffingTimeoutMS: deriveTime(
-                //     sniffingTimeout as string,
-                //     'ms'
-                //   ),
-                //   checkToleranceMS: deriveTime(checkTolerance as string, 'ms'),
-                //   ...global
-                // })
-                // isUpdateConfigFormModalOpen = true
-              }
-            "
-          >
-            <Icon name="i-heroicons:pencil" />
-          </Button>
-
-          <Button
-            :loading="isRemovingConfig"
-            :disabled="
-              config.id === defaults?.defaultConfigID || config.selected
-            "
-            size="icon"
-            @click="removeConfig(config.id)"
-          >
-            <Icon name="i-heroicons:minus" />
-          </Button>
-
-          <Button
-            :loading="isSelectingConfig"
-            :disabled="config.selected"
-            size="icon"
-            @click="selectConfig(config.id)"
-          >
-            <Icon name="i-heroicons:map-pin" />
-          </Button>
-        </div>
-      </template>
-    </UCard>
-
-    <ConfigFormModal
-      ref="createConfigFormModalRef"
-      v-model:open="isCreateConfigModalOpen"
-      @submit="
-        async () => {
-          await reloadConfigs()
-
-          isCreateConfigModalOpen = false
-        }
-      "
-    />
-
-    <ConfigFormModal
-      ref="updateConfigFormModalRef"
-      v-model:open="isUpdateConfigFormModalOpen"
-      @submit="
-        async () => {
-          await reloadConfigs()
-
-          isUpdateConfigFormModalOpen = false
-        }
-      "
+    <ResourceConfigCard
+      v-for="config in configs"
+      :key="config.id"
+      :config="config"
+      @reload-configs="reloadConfigs"
     />
   </div>
 </template>

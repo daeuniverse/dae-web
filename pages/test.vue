@@ -7,5 +7,7 @@
         <Icon name="heroicons:moon-20-solid" />
       </template>
     </Button>
+
+    <MonacoEditor class="h-[50vh]" lang="typescript" />
   </div>
 </template>

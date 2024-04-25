@@ -31,14 +31,18 @@ watch(selectedResourceTab, (selectedResourceTab) => {
     <TheHeader />
 
     <div
-      class="flex flex-col items-start gap-4 px-0 py-4 sm:px-4 lg:flex-row lg:px-0 [&>*]:w-full lg:[&>*]:w-1/2"
+      class="flex flex-col items-start gap-4 px-0 py-4 sm:px-4 lg:flex-row lg:px-0 [&>*]:w-full [&>*]:space-y-2 lg:[&>*]:w-1/2"
     >
-      <TabMenu
-        v-model:active-index="selectedResourceTabIndex"
-        :model="resourceTabs"
-      />
+      <div>
+        <TabMenu
+          v-model:active-index="selectedResourceTabIndex"
+          :model="resourceTabs"
+        />
 
-      <div class="space-y-2">
+        <ResourceConfig />
+      </div>
+
+      <div>
         <ClientOnly>
           <Panel header="subscription">
             <ResourceSubscription />
