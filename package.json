@@ -26,7 +26,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@shikijs/monaco": "^1.3.0",
     "@types/lodash-es": "^4.17.12",
-    "@urql/core": "^5.0.2",
+    "@urql/core": "^5.0.3",
     "@vee-validate/nuxt": "^4.12.6",
     "@vee-validate/zod": "^4.12.6",
     "@volar/vue-typescript": "^1.6.5",
